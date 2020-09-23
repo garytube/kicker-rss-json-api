@@ -27,7 +27,7 @@ const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database(dbFile);
 
 // if ./.data/sqlite.db does not exist, create it, otherwise print records to console
-const sql_create = `CREATE TABLE IF NOT EXISTS Books (
+const sql_create = `CREATE TABLE IF NOT EXISTS Kicker (
   ID INTEGER PRIMARY KEY AUTOINCREMENT,
   Title VARCHAR(100) NOT NULL,
   Image VARCHAR(100) NOT NULL,
@@ -58,23 +58,25 @@ app.get("/", async (req, res) => {
   const stuff = await Promise.all(
     articels.slice(0, 3).map(async post => {
       const { title, images } = await lp.getLinkPreview(post.link);
-
-      return {
-        title,
-        image: images[0],
-        story: post.content,
-        date: post.isoDate
-      };
+      return [title, images[0], post.content, post.isoDate]
     })
   );
-  const sql_insert = `INSERT INTO Kicker (Title, Image, Story, Publish ) VALUES(?, ?, ?, ?)`
+  let placeholders = stuff.map((language) => '(?, ?, ?, ?)').join(',');
+  const sql_insert = `INSERT INTO Kicker (Title, Image, Story, Publish ) VALUES` + placeholders
+  db.run(sql_insert, stuff, err => {
+    if (err) {
+      console.log(sql_insert, stuff)
+      return console.error(err.message);
+    }
+    console.log(this.changes);
+  })
   return res.json(stuff);
 });
 
 // endpoint to get all the dreams in the database
-app.get("/getDreams", (request, response) => {
-  db.all("SELECT * from Dreams", (err, rows) => {
-    response.send(JSON.stringify(rows));
+app.get("/news", (request, response) => {
+  db.all("SELECT * from Kicker", (err, rows) => {
+    response.json(rows);
   });
 });
 
