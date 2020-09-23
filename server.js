@@ -5,14 +5,13 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const lp = require("link-preview-js");
-let Parser = require('rss-parser');
+let Parser = require("rss-parser");
 const app = express();
 const fs = require("fs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 let parser = new Parser();
-
 
 // we've started you off with Express,
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
@@ -56,11 +55,21 @@ app.get("/d", (request, response) => {
 });
 
 app.get("/", async (req, res) => {
-  let feed = await parser.parseURL('https://rss.kicker.de/news/aktuell');
-  const articels = await feed.items.filter(post => post.link.includes('artikel'))
-  const preview = await lp.getLinkPreview(arti)
-  return res.json(articels) 
+  let feed = await parser.parseURL("https://rss.kicker.de/news/aktuell");
+  const articels = await feed.items.filter(post =>
+    post.link.includes("artikel")
+  );
+  // const preview = await lp.getLinkPreview(articels[0].link)
+  // return res.json({foo:articels[0], preview})
 
+  const stuff = await Promise.all(
+    articels.map(async post => {
+      const contents = await lp.getLinkPreview(post.link);
+      console.log(contents.title);
+      return contents.title
+    }) 
+  );
+  return res.json(stuff);
 });
 
 // endpoint to get all the dreams in the database
