@@ -6,12 +6,12 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const lp = require("link-preview-js");
 let Parser = require("rss-parser");
-var morgan = require('morgan')
+var morgan = require("morgan");
 const app = express();
 const fs = require("fs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(morgan('dev'))
+app.use(morgan("dev"));
 let parser = new Parser();
 
 // we've started you off with Express,
@@ -30,9 +30,10 @@ const db = new sqlite3.Database(dbFile);
 db.serialize(() => {
   if (!exists) {
     db.run(
-      "CREATE TABLE Dreams (id INTEGER PRIMARY KEY AUTOINCREMENT, dream TEXT)"
+      "CREATE TABLE KickerNews (id INTEGER PRIMARY KEY AUTOINCREMENT, title VARCHAR(255),image VARCHAR(255) ,story VARCHAR(255),date  VARCHAR(60)"
     );
-    console.log("New table Dreams created!");
+
+    console.log("New table KickerNews created!");
 
     // insert default dreams
     db.serialize(() => {
@@ -61,14 +62,19 @@ app.get("/", async (req, res) => {
     post.link.includes("artikel")
   );
   // const preview = await lp.getLinkPreview(articels[0].link)
-  return res.json({foo:articels[0]})
+  // return res.json({foo:articels[0]})
 
   const stuff = await Promise.all(
-    articels.map(async post => {
-      const {title, images} = await lp.getLinkPreview(post.link);
+    articels.slice(0, 3).map(async post => {
+      const { title, images } = await lp.getLinkPreview(post.link);
 
-      return {title,image: images[0], story:post.content}
-    }) 
+      return {
+        title,
+        image: images[0],
+        story: post.content,
+        date: post.isoDate
+      };
+    })
   );
   return res.json(stuff);
 });
