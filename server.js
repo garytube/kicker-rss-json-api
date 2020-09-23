@@ -6,11 +6,12 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const lp = require("link-preview-js");
 let Parser = require("rss-parser");
+var morgan = require('morgan')
 const app = express();
 const fs = require("fs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
+app.use(morgan('dev'))
 let parser = new Parser();
 
 // we've started you off with Express,
@@ -60,13 +61,13 @@ app.get("/", async (req, res) => {
     post.link.includes("artikel")
   );
   // const preview = await lp.getLinkPreview(articels[0].link)
-  // return res.json({foo:articels[0], preview})
+  return res.json({foo:articels[0]})
 
   const stuff = await Promise.all(
     articels.map(async post => {
-      const contents = await lp.getLinkPreview(post.link);
-      console.log(contents.title);
-      return contents.title
+      const {title, images} = await lp.getLinkPreview(post.link);
+
+      return {title,image: images[0], story:post.content}
     }) 
   );
   return res.json(stuff);

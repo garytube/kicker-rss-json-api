@@ -1,6 +1,7 @@
 dependencies:
   express: 4.17.1
   link-preview-js: 2.0.4
+  morgan: 1.10.0
   rss-parser: 3.9.0
   sqlite3: 5.0.0
 packages:
@@ -107,6 +108,14 @@ packages:
     dev: false
     resolution:
       integrity: sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
+  /basic-auth/2.0.1:
+    dependencies:
+      safe-buffer: 5.1.2
+    dev: false
+    engines:
+      node: '>= 0.8'
+    resolution:
+      integrity: sha512-NF+epuEdnUYVlGuhaxbbq+dvJttwLnGY+YixlXlME5KpQ5W3CnXA5cVTneY3SPbPDRkcjMbifrwmFYcClgOZeg==
   /bcrypt-pbkdf/1.0.2:
     dependencies:
       tweetnacl: 0.14.5
@@ -312,6 +321,12 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha1-m81S4UwJd2PnSbJ0xDRu0uVgtak=
+  /depd/2.0.0:
+    dev: false
+    engines:
+      node: '>= 0.8'
+    resolution:
+      integrity: sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==
   /destroy/1.0.4:
     dev: false
     resolution:
@@ -913,6 +928,18 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-NKmAlESf6jMGym1++R0Ra7wvhV+wFW63FaSOFPwRahvea0gMUcGUhVeAg/0BC0wiv9ih5NYPB1Wn1UEI1/L+xQ==
+  /morgan/1.10.0:
+    dependencies:
+      basic-auth: 2.0.1
+      debug: 2.6.9
+      depd: 2.0.0
+      on-finished: 2.3.0
+      on-headers: 1.0.2
+    dev: false
+    engines:
+      node: '>= 0.8.0'
+    resolution:
+      integrity: sha512-AbegBVI4sh6El+1gNwvD5YIck7nSA36weD7xvIxG4in80j/UoK8AEGaWnnz8v1GxonMCltmlNs5ZKbGvl9b1XQ==
   /ms/2.0.0:
     dev: false
     resolution:
@@ -1068,6 +1095,12 @@ packages:
       node: '>= 0.8'
     resolution:
       integrity: sha1-IPEzZIGwg811M3mSoWlxqi2QaUc=
+  /on-headers/1.0.2:
+    dev: false
+    engines:
+      node: '>= 0.8'
+    resolution:
+      integrity: sha512-pZAE+FJLoyITytdqK0U5s+FIpjN0JP3OzFi/u8Rx+EV5/W+JTWGXG8xFzevE7AjBfDqHv/8vL8qQsIhHnqRkrA==
   /once/1.4.0:
     dependencies:
       wrappy: 1.0.2
@@ -1631,5 +1664,6 @@ shrinkwrapVersion: 3
 specifiers:
   express: ^4.17.1
   link-preview-js: ^2.0.3
+  morgan: ^1.10.0
   rss-parser: ^3.9.0
   sqlite3: ^5.0.0
