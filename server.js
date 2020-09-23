@@ -30,7 +30,7 @@ const db = new sqlite3.Database(dbFile);
 db.serialize(() => {
   if (!exists) {
     db.run(
-      "CREATE TABLE Kicker (id INTEGER PRIMARY KEY AUTOINCREMENT, title VARCHAR(255),image VARCHAR(255) ,story VARCHAR(255),date  VARCHAR(60)"
+      "CREATE TABLE Kicker (id INTEGER PRIMARY KEY AUTOINCREMENT, title text,image text,story text,date text)"
     );
 
     console.log("New table Kicker created!");
@@ -38,7 +38,7 @@ db.serialize(() => {
     // insert default dreams
     db.serialize(() => {
       db.run(
-        'INSERT INTO Kicker (news) VALUES ("Find and count some sheep"), ("Climb a really tall mountain"), ("Wash the dishes")'
+        'INSERT INTO Kicker(title, image, story, date) VALUES ("foo", "baa", "caa", "1234")'
       );
     });
   } else {
@@ -76,14 +76,6 @@ app.get("/", async (req, res) => {
       };
     })
   );
-let sql = 'INSERT INTO Kicker (news) VALUES (?,?,?,?)';
-  db.run(sql, ["foo", "ba", "ts", "ak"], function(err) {
-  if (err) {
-    return console.error(err.message);
-  }
-  console.log(`Rows inserted ${this.changes}`);
-});
-  console.log(sql)
   return res.json(stuff);
 });
 
