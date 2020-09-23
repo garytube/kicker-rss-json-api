@@ -30,20 +30,20 @@ const db = new sqlite3.Database(dbFile);
 db.serialize(() => {
   if (!exists) {
     db.run(
-      "CREATE TABLE KickerNews (id INTEGER PRIMARY KEY AUTOINCREMENT, title VARCHAR(255),image VARCHAR(255) ,story VARCHAR(255),date  VARCHAR(60)"
+      "CREATE TABLE Kicker (id INTEGER PRIMARY KEY AUTOINCREMENT, title VARCHAR(255),image VARCHAR(255) ,story VARCHAR(255),date  VARCHAR(60)"
     );
 
-    console.log("New table KickerNews created!");
+    console.log("New table Kicker created!");
 
     // insert default dreams
     db.serialize(() => {
-      // db.run(
-      //   'INSERT INTO Dreams (dream) VALUES ("Find and count some sheep"), ("Climb a really tall mountain"), ("Wash the dishes")'
-      // );
+      db.run(
+        'INSERT INTO Kicker (news) VALUES ("Find and count some sheep"), ("Climb a really tall mountain"), ("Wash the dishes")'
+      );
     });
   } else {
-    console.log('Database "KickerNews" ready to go!');
-    db.each("SELECT * from KickerNews", (err, row) => {
+    console.log('Database "Kicker" ready to go!');
+    db.each("SELECT * from Kicker", (err, row) => {
       if (row) {
         console.log(`record: ${row.dream}`);
       }
@@ -76,7 +76,13 @@ app.get("/", async (req, res) => {
       };
     })
   );
-let sql = 'INSERT INTO KickerNews(news) VALUES (?,?,?,?)';
+let sql = 'INSERT INTO Kicker (news) VALUES (?,?,?,?)';
+  db.run(sql, ["foo", "ba", "ts", "ak"], function(err) {
+  if (err) {
+    return console.error(err.message);
+  }
+  console.log(`Rows inserted ${this.changes}`);
+});
   console.log(sql)
   return res.json(stuff);
 });
