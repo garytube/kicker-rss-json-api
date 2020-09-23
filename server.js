@@ -4,6 +4,7 @@
 // init project
 const express = require("express");
 const bodyParser = require("body-parser");
+const lp = require("link-preview-js");
 const app = express();
 const fs = require("fs");
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -46,8 +47,14 @@ db.serialize(() => {
 });
 
 // http://expressjs.com/en/starter/basic-routing.html
-app.get("/", (request, response) => {
+app.get("/d", (request, response) => {
   response.sendFile(`${__dirname}/views/index.html`);
+});
+
+app.get("/", (req, res) => {
+  lp.getLinkPreview("https://www.kicker.de/785398/artikel/koeman-nachfolge-geregelt-de-boer-uebernimmt-oranje#omrss").then(data =>
+    res.send(data)
+  );
 });
 
 // endpoint to get all the dreams in the database
