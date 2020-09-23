@@ -37,13 +37,13 @@ db.serialize(() => {
 
     // insert default dreams
     db.serialize(() => {
-      db.run(
-        'INSERT INTO Dreams (dream) VALUES ("Find and count some sheep"), ("Climb a really tall mountain"), ("Wash the dishes")'
-      );
+      // db.run(
+      //   'INSERT INTO Dreams (dream) VALUES ("Find and count some sheep"), ("Climb a really tall mountain"), ("Wash the dishes")'
+      // );
     });
   } else {
-    console.log('Database "Dreams" ready to go!');
-    db.each("SELECT * from Dreams", (err, row) => {
+    console.log('Database "KickerNews" ready to go!');
+    db.each("SELECT * from KickerNews", (err, row) => {
       if (row) {
         console.log(`record: ${row.dream}`);
       }
@@ -76,6 +76,8 @@ app.get("/", async (req, res) => {
       };
     })
   );
+let sql = 'INSERT INTO KickerNews(news) VALUES (?,?,?,?)';
+  console.log(sql)
   return res.json(stuff);
 });
 
