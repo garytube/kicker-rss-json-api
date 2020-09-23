@@ -12,7 +12,8 @@
   "dependencies": {
     "express": "^4.17.1",
     "sqlite3": "^5.0.0",
-    "link-preview-js": "^2.0.3"
+    "link-preview-js": "^2.0.3",
+    "rss-parser": "^3.9.0"
   },
   "engines": {
     "node": "12.x"

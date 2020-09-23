@@ -5,10 +5,14 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const lp = require("link-preview-js");
+let Parser = require('rss-parser');
 const app = express();
 const fs = require("fs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+let parser = new Parser();
+
 
 // we've started you off with Express,
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
@@ -51,10 +55,12 @@ app.get("/d", (request, response) => {
   response.sendFile(`${__dirname}/views/index.html`);
 });
 
-app.get("/", (req, res) => {
-  lp.getLinkPreview("https://www.kicker.de/785398/artikel/koeman-nachfolge-geregelt-de-boer-uebernimmt-oranje#omrss").then(data =>
-    res.send(data)
-  );
+app.get("/", async (req, res) => {
+  let feed = await parser.parseURL('https://rss.kicker.de/news/aktuell');
+  const articels = await feed.items.filter(post => post.link.includes('artikel'))
+  const preview = await lp.getLinkPreview(arti)
+  return res.json(articels) 
+
 });
 
 // endpoint to get all the dreams in the database
